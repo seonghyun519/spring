@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor
-@Entity(name = "users")
+@Entity(name = "users") //h2 ver.2 업데이트로 user가 예약어로 등록되어 name을 users로 변경하여 테이블 이름을 users로 설정해야함
 public class User {
 
     @Id
