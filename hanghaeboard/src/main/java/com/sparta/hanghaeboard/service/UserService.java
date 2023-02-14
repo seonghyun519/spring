@@ -1,0 +1,46 @@
+package com.sparta.hanghaeboard.service;
+
+import com.sparta.hanghaeboard.dto.LoginRequestDto;
+import com.sparta.hanghaeboard.dto.SignUpRequestDto;
+import com.sparta.hanghaeboard.dto.statusCodeResponseDto;
+import com.sparta.hanghaeboard.entity.User;
+import com.sparta.hanghaeboard.jwt.JwtUtil;
+import com.sparta.hanghaeboard.repository.SignUpRepository;
+import com.sparta.hanghaeboard.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.servlet.http.HttpServletResponse;
+import java.util.Optional;
+
+@Service
+@RequiredArgsConstructor
+public class UserService {
+
+    private final UserRepository userRepository;
+    private final SignUpRepository signUpRepository;
+    private final JwtUtil jwtUtil; //jwtUtil 의존성 주입 //jwtUtil @Component 사용되어 빈이 등록되어 의존성 주입이됨
+
+    // ADMIN_TOKEN
+//    private static final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
+
+
+    @Transactional(readOnly = true)
+    public statusCodeResponseDto login(LoginRequestDto loginRequestDto, HttpServletResponse response) {
+        String username = loginRequestDto.getUsername();
+        String pwd = loginRequestDto.getPwd();
+
+        // 사용자 확인
+        User user = userRepository.findByUsername(username).orElseThrow(
+                () -> new IllegalArgumentException("등록된 사용자가 없습니다.")
+        );
+        // 비밀번호 확인
+        if(!user.getPwd().equals(pwd)){
+            throw  new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+
+        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(user.getUsername()));
+        return new statusCodeResponseDto("로그인 완료", 200);
+    }
+}
