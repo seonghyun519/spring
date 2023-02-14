@@ -4,10 +4,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
-@Entity(name = "users") //h2 ver.2 업데이트로 user가 예약어로 등록되어 name을 users로 변경하여 테이블 이름을 users로 설정해야함
+@Entity(name = "users")
 public class User {
 
     @Id
@@ -29,10 +31,14 @@ public class User {
     @Enumerated(value = EnumType.STRING)
     private UserRoleEnum role;
 
+    @OneToMany
+    List<Folder> folders = new ArrayList<>();
+
     public User(String username, String password, String email, UserRoleEnum role) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.role = role;
     }
+
 }

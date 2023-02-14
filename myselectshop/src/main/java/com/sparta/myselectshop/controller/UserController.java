@@ -5,10 +5,10 @@ import com.sparta.myselectshop.dto.SignupRequestDto;
 import com.sparta.myselectshop.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletResponse;
 
 @Controller
 @RequiredArgsConstructor
@@ -32,10 +32,12 @@ public class UserController {
         userService.signup(signupRequestDto);
         return "redirect:/api/user/login";
     }
+
+    @ResponseBody
     @PostMapping("/login")
-    public String login(LoginRequestDto loginRequestDto) {
-        userService.login(loginRequestDto);
-        return "redirect:/api/shop";
+    public String login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response) { //form태그에서 받아온 값을 ajax로 받아 @RequestBody로 변경
+        userService.login(loginRequestDto, response);
+        return "success";
     }
 
 }
