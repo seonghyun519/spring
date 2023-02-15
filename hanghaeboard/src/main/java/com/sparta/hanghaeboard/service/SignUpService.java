@@ -2,6 +2,7 @@ package com.sparta.hanghaeboard.service;
 import com.sparta.hanghaeboard.dto.SignUpRequestDto;
 import com.sparta.hanghaeboard.dto.statusCodeResponseDto;
 import com.sparta.hanghaeboard.entity.User;
+import com.sparta.hanghaeboard.entity.UserRoleEnum;
 import com.sparta.hanghaeboard.jwt.JwtUtil;
 import com.sparta.hanghaeboard.repository.SignUpRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import java.util.Optional;
 public class SignUpService {
     private final SignUpRepository signUpRepository;
     private final JwtUtil jwtUtil;
+    private static final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
 
     @Transactional
     public statusCodeResponseDto signUp(SignUpRequestDto signupRequestDto) {
@@ -26,8 +28,16 @@ public class SignUpService {
         if (found.isPresent()) {
             throw new IllegalArgumentException("중복된 사용자가 존재합니다.");
         }
+        // 사용자 ROLE 확인
+        UserRoleEnum role = UserRoleEnum.USER;
+        if (signupRequestDto.isAdmin()) {
+            if (!signupRequestDto.getAdminToken().equals(ADMIN_TOKEN)) {
+                throw new IllegalArgumentException("관리자 암호가 틀려 등록이 불가능합니다.");
+            }
+            role = UserRoleEnum.ADMIN;
+        }
 
-        User user = new User(username, pwd);
+        User user = new User(username, pwd, role);
         signUpRepository.save(user);
         return new statusCodeResponseDto("회원가입 완료",200);
     }

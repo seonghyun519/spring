@@ -5,6 +5,7 @@ import com.sparta.hanghaeboard.dto.BoardResponseDto;
 import com.sparta.hanghaeboard.dto.statusCodeResponseDto;
 import com.sparta.hanghaeboard.entity.Board;
 import com.sparta.hanghaeboard.entity.User;
+import com.sparta.hanghaeboard.entity.UserRoleEnum;
 import com.sparta.hanghaeboard.jwt.JwtUtil;
 import com.sparta.hanghaeboard.repository.BoardRepository;
 import com.sparta.hanghaeboard.repository.UserRepository;
@@ -117,31 +118,56 @@ public class BoardService {
     @Transactional
     public statusCodeResponseDto deleteBoard(Long id, HttpServletRequest request) {
         String token = jwtUtil.resolveToken(request);
-        Claims claims;
+        Claims claims = tokenValid(token);
+        User user = userValid(claims);
+        Board board = boardValid(id, user);
 
-        // 토큰이 있는 경우에만 삭제 가능
+
+        UserRoleEnum userRoleEnum = user.getRole(); //권한 확인
+
+//            if (userRoleEnum == UserRoleEnum.USER) {
+//                 사용자 권한이 USER일 경우
+//                products = productRepository.findAllByUserId(user.getId(), pageable);
+//            } else {
+//                products = productRepository.findAll(pageable);
+//            }
+
+        boardRepository.delete(board);
+        return new statusCodeResponseDto("게시글 삭제 성공", 200);
+
+//            return new statusCodeResponseDto("게시글 삭제 실패", 87);
+    }
+
+    //토큰 유효성 검사
+    public Claims tokenValid(String token) {
         if (token != null) {
-            // Token 검증
-            if (jwtUtil.validateToken(token)) {
-                // 토큰에서 사용자 정보 가져오기
-                claims = jwtUtil.getUserInfoFromToken(token);
-            } else {
+            if (!(jwtUtil.validateToken(token))) {
                 throw new IllegalArgumentException("Token Error");
             }
-
-            // 토큰에서 가져온 사용자 정보를 사용하여 DB 조회
-            User user = userRepository.findByUsername(claims.getSubject()).orElseThrow(
-                    () -> new IllegalArgumentException("사용자가 존재하지 않습니다.")
-            );
-            Board board = boardRepository.findByIdAndUserId(id, user.getId()).orElseThrow(
-                    () -> new NullPointerException("본인이 작성한 글이 아닙니다")
-            );
-            boardRepository.delete(board);
-            return new statusCodeResponseDto("게시글 삭제 성공", 200);
-        } else {
-            return new statusCodeResponseDto("게시글 삭제 실패", 87);
         }
+        return jwtUtil.getUserInfoFromToken(token);
     }
+
+    //유저 정보 유효성 검사
+    public User userValid(Claims claims) {
+        User user = userRepository.findByUsername(claims.getSubject()).orElseThrow(
+                () -> new IllegalArgumentException("사용자가 존재하지 않습니다.")
+        );
+        return user;
+    }
+
+    //board 게시글의 유저정보와 동일여부 검사
+    public Board boardValid(Long id, User user) {
+        Board board = boardRepository.findByIdAndUserId(id, user.getId()).orElseThrow(
+                () -> new NullPointerException("본인이 작성한 글이 아닙니다")
+        );
+
+        return board;
+    }
+
+
+
+
 }
 
 //중복 코드 아래 정리 필요

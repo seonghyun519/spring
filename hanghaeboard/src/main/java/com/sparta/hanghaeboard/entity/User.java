@@ -22,8 +22,12 @@ public class User {
     @Column(nullable = false)
     private String pwd;
 
+    @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
+    private UserRoleEnum role;
 
-    public User(String username, String pwd) {
+
+    public User(String username, String pwd, UserRoleEnum role) {
         this.username = username;
         this.pwd = pwd;
     }
