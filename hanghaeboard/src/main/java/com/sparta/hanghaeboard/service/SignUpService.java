@@ -27,16 +27,6 @@ public class SignUpService {
             throw new IllegalArgumentException("중복된 사용자가 존재합니다.");
         }
 
-//        String email = signupRequestDto.getEmail();
-        // 사용자 ROLE 확인
-//        UserRoleEnum role = UserRoleEnum.USER;
-//        if (signupRequestDto.isAdmin()) {
-//            if (!signupRequestDto.getAdminToken().equals(ADMIN_TOKEN)) {
-//                throw new IllegalArgumentException("관리자 암호가 틀려 등록이 불가능합니다.");
-//            }
-//            role = UserRoleEnum.ADMIN;
-//        }
-
         User user = new User(username, pwd);
         signUpRepository.save(user);
         return new statusCodeResponseDto("회원가입 완료",200);

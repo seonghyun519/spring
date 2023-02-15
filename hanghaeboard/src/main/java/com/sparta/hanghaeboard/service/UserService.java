@@ -1,7 +1,6 @@
 package com.sparta.hanghaeboard.service;
 
 import com.sparta.hanghaeboard.dto.LoginRequestDto;
-import com.sparta.hanghaeboard.dto.SignUpRequestDto;
 import com.sparta.hanghaeboard.dto.statusCodeResponseDto;
 import com.sparta.hanghaeboard.entity.User;
 import com.sparta.hanghaeboard.jwt.JwtUtil;
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,9 +19,6 @@ public class UserService {
     private final UserRepository userRepository;
     private final SignUpRepository signUpRepository;
     private final JwtUtil jwtUtil; //jwtUtil 의존성 주입 //jwtUtil @Component 사용되어 빈이 등록되어 의존성 주입이됨
-
-    // ADMIN_TOKEN
-//    private static final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
 
 
     @Transactional(readOnly = true)

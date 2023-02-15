@@ -39,5 +39,4 @@ public class UserController {
         userService.login(loginRequestDto, response);
         return "success";
     }
-
 }

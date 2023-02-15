@@ -10,7 +10,7 @@ import javax.persistence.*;
 
 @Getter
 @Entity
-@NoArgsConstructor //파라미터 없는 기본생성자 생성
+@NoArgsConstructor
 public class Board extends Timestamped{
     private static final Logger logger = LoggerFactory.getLogger(Board.class);
     @Id
