@@ -30,5 +30,6 @@ public class User {
     public User(String username, String pwd, UserRoleEnum role) {
         this.username = username;
         this.pwd = pwd;
+        this.role = role;
     }
 }

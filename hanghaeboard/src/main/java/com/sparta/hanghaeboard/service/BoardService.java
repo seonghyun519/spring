@@ -29,40 +29,24 @@ public class BoardService {
 
     private static final Logger logger = LoggerFactory.getLogger(BoardService.class);
 
-    //게시글 작성 서비스//2차 완료
+    //게시글 작성 서비스
     @Transactional
     public BoardResponseDto createBoard(BoardRequestDto boardRequestDTO, HttpServletRequest request) {
         logger.info("BoardService createBoard 동작");
 
         String token = jwtUtil.resolveToken(request);
-        Claims claims;
-
-        // 토큰이 있는 경우에만 글작성 가능
-        if (token != null) {
-            if (jwtUtil.validateToken(token)) {
-                // 토큰에서 사용자 정보 가져오기
-                claims = jwtUtil.getUserInfoFromToken(token);
-            } else {
-                throw new IllegalArgumentException("Token Error");
-            }
-
-            // 토큰에서 가져온 사용자 정보를 사용하여 DB 조회
-            User user = userRepository.findByUsername(claims.getSubject()).orElseThrow(
-                    () -> new IllegalArgumentException("사용자가 존재하지 않습니다.")
-            );
-            Board board = new Board(boardRequestDTO, user); //받아온값 객체 생성해서 넣어 주고
-            boardRepository.save(board); //레포지토리 save 함수를 통해 데이터 베이스에 저장
-            // 요청받은 DTO 로 DB에 저장할 객체 만들기
-            return new BoardResponseDto(board);
-        } else {
-            throw new IllegalArgumentException("수정 안됨");
-        }
+        Claims claims = tokenValid(token);
+        User user = userValid(claims);
+        Board board = new Board(boardRequestDTO, user);
+        boardRepository.save(board);
+        return new BoardResponseDto(board);
     }
 
 
     //게시글 리스트에 담아서 뷰에 뿌리는 서비스
     @Transactional(readOnly = true)
-    public List<BoardResponseDto> getBoards() { //반환타입 체크
+    public List<BoardResponseDto> getBoards() {
+        logger.info("BoardService getBoards 동작");
         List<Board> list = boardRepository.findAllByOrderByModifiedAtDesc();
         List<BoardResponseDto> boardResponseDTO = new ArrayList<>();
         for (Board board : list) {
@@ -73,12 +57,9 @@ public class BoardService {
 
     //상세페이지
     @Transactional(readOnly = true)
-    public BoardResponseDto getDetailBoard(Long id) { //반환타입 체크
-        Board board = boardRepository.findById(id).orElseThrow(
-                () -> new IllegalArgumentException("해당 아이디의 게시글이 존재하지 않습니다.")
-        );
-        logger.info("상세페이지 board값: " + board.getId() + "/     " + board.getTitle());
-        logger.info("상세보기");
+    public BoardResponseDto getDetailBoard(Long id) {
+        logger.info("BoardService getDetailBoard 동작");
+        Board board = boardIdValid(id);
         BoardResponseDto boardResponseDTO = new BoardResponseDto(board);
         return boardResponseDTO;
     }
@@ -91,53 +72,37 @@ public class BoardService {
 
 
         String token = jwtUtil.resolveToken(request);
-        Claims claims;
-
-        if (token != null) {
-            if (jwtUtil.validateToken(token)) {
-                claims = jwtUtil.getUserInfoFromToken(token);
-            } else {
-                throw new IllegalArgumentException("Token Error");
-            }
-
-            User user = userRepository.findByUsername(claims.getSubject()).orElseThrow(
-                    () -> new IllegalArgumentException("사용자가 존재하지 않습니다.")
-            );
-            Board board = boardRepository.findByIdAndUserId(id, user.getId()).orElseThrow(
-                    () -> new NullPointerException("본인이 작성한 글이 아닙니다")
-            );
+        Claims claims = tokenValid(token);
+        User user = userValid(claims);
+        if (user.getRole() == UserRoleEnum.ADMIN) {
+            Board board = boardIdValid(id);
             board.update(boardRequestDTO);
             BoardResponseDto boardResponseDTO = new BoardResponseDto(board);
             return boardResponseDTO;
-        } else {
-            return null;
         }
+        Board board = boardIdByUserValid(id, user);
+        board.update(boardRequestDTO, user);
+        BoardResponseDto boardResponseDTO = new BoardResponseDto(board);
+        return boardResponseDTO;
     }
 
     //삭제 서비스
     @Transactional
     public statusCodeResponseDto deleteBoard(Long id, HttpServletRequest request) {
+        logger.info("BoardService deleteBoard 동작");
         String token = jwtUtil.resolveToken(request);
         Claims claims = tokenValid(token);
         User user = userValid(claims);
-        Board board = boardValid(id, user);
-
-
-        UserRoleEnum userRoleEnum = user.getRole(); //권한 확인
-
-//            if (userRoleEnum == UserRoleEnum.USER) {
-//                 사용자 권한이 USER일 경우
-//                products = productRepository.findAllByUserId(user.getId(), pageable);
-//            } else {
-//                products = productRepository.findAll(pageable);
-//            }
+        if (user.getRole() == UserRoleEnum.ADMIN) {
+            boardRepository.delete(boardIdValid(id));
+            return new statusCodeResponseDto("게시글 삭제 성공", 200);
+        }
+        Board board = boardIdByUserValid(id, user);
 
         boardRepository.delete(board);
         return new statusCodeResponseDto("게시글 삭제 성공", 200);
-
 //            return new statusCodeResponseDto("게시글 삭제 실패", 87);
     }
-
     //토큰 유효성 검사
     public Claims tokenValid(String token) {
         if (token != null) {
@@ -157,7 +122,7 @@ public class BoardService {
     }
 
     //board 게시글의 유저정보와 동일여부 검사
-    public Board boardValid(Long id, User user) {
+    public Board boardIdByUserValid(Long id, User user) {
         Board board = boardRepository.findByIdAndUserId(id, user.getId()).orElseThrow(
                 () -> new NullPointerException("본인이 작성한 글이 아닙니다")
         );
@@ -165,9 +130,11 @@ public class BoardService {
         return board;
     }
 
-
-
-
+    //게시글 유무 확인
+    public Board boardIdValid(Long id) {
+        Board board = boardRepository.findById(id).orElseThrow(
+                () -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다.")
+        );
+        return board;
+    }
 }
-
-//중복 코드 아래 정리 필요

@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Entity
@@ -27,13 +28,19 @@ public class Board extends Timestamped{
     @JoinColumn(name = "USER_ID", nullable = false)
     private User user;
 
-    public Board(BoardRequestDto requestDTO, User user){ // dddddddddddddddddddddddddddddddddddddddddd
+    public Board(BoardRequestDto requestDTO, User user){
         logger.info("Board Entity 정상 실행1");
         this.title = requestDTO.getTitle();
         this.content = requestDTO.getContent();
         this.user = user;
     }
-    public void update(BoardRequestDto boardRequestDTO){//, User user          dddddddddddddddddddddddddddddddd
+    public void update(BoardRequestDto boardRequestDTO){
+        logger.info("Board Entity 정상 실행2/관리자 수정");
+        this.title = boardRequestDTO.getTitle();
+        this.content = boardRequestDTO.getContent();
+        this.user = user;
+    }
+    public void update(BoardRequestDto boardRequestDTO, User user){
         logger.info("Board Entity 정상 실행2");
         this.title = boardRequestDTO.getTitle();
         this.content = boardRequestDTO.getContent();

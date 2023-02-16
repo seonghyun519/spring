@@ -17,4 +17,5 @@ public class SignUpRequestDto {
     private String pwd;
     private boolean admin = false;
     private String adminToken = "";
+    private String jwtSecretKey ="";
 }
