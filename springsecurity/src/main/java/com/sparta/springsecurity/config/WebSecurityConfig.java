@@ -27,15 +27,10 @@ public class WebSecurityConfig {
         http.csrf().disable();
 
         http.authorizeRequests()
-                .antMatchers("/h2-console/**").permitAll()
-                .antMatchers("/css/**").permitAll()
-                .antMatchers("/js/**").permitAll()
-                .antMatchers("/images/**").permitAll()
-                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                 .anyRequest().authenticated();
 
-        // 로그인 사용
-        http.formLogin();
+        // Custom 로그인 페이지 사용
+        http.formLogin().loginPage("/api/user/login-page").permitAll();
 
         return http.build();
     }
