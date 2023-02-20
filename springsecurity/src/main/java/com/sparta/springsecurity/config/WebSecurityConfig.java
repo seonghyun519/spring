@@ -9,13 +9,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -51,8 +51,10 @@ public class WebSecurityConfig {
 
         // Custom 로그인 페이지 사용
         http.formLogin().loginPage("/api/user/login-page").permitAll();
-
         // Custom Filter 등록하기
+        //addFilterBefore 어떠한 필터 이전에 추가하겠다. //UsernamePasswordAuthenticationFilter이전에 CustomSecurityFilter가 실행 할 수 있도록 설정
+        //CustomSecurityFilter를 통해서 인증 객체를 만들고 context에 추가하면 인증이 완료 되었기에 UsernamePasswordAuthenticationFilter가 실행되어도 인증이 되어서 다음 필터로 넘어가면서 컨트롤러까지 요청이 갈 수 있음
+        http.addFilterBefore(new CustomSecurityFilter(userDetailsService, passwordEncoder()), UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(new CustomSecurityFilter(userDetailsService, passwordEncoder()), UsernamePasswordAuthenticationFilter.class);
 
         // 접근 제한 페이지 이동 설정

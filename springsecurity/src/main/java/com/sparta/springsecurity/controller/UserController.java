@@ -74,9 +74,4 @@ public class UserController {
         return "redirect:/api/user/login-page";
     }
 
-    @PostMapping("/forbidden")
-    public ModelAndView forbidden() {
-        return new ModelAndView("forbidden");
-    }
-
 }
