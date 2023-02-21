@@ -23,7 +23,7 @@ public class ProductController {
     // 관심 상품 등록하기
     @Secured(UserRoleEnum.Authority.ADMIN)
     @PostMapping("/products")
-    public ProductResponseDto createProduct(@RequestBody ProductRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) { //인증 객체에 담겨 있는 UserDetailsImple을 파라미터로 받아 올 수 있음
+    public ProductResponseDto createProduct(@RequestBody ProductRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         // 응답 보내기
         return productService.createProduct(requestDto, userDetails.getUser());
     }
