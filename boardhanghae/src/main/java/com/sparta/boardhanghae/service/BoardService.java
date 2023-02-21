@@ -4,11 +4,9 @@ import com.sparta.boardhanghae.dto.BoardRequestDto;
 import com.sparta.boardhanghae.dto.BoardResponseDto;
 import com.sparta.boardhanghae.dto.ReplyResponseDto;
 import com.sparta.boardhanghae.dto.statusCodeResponseDto;
-import com.sparta.boardhanghae.entity.Board;
-import com.sparta.boardhanghae.entity.Reply;
-import com.sparta.boardhanghae.entity.User;
-import com.sparta.boardhanghae.entity.UserRoleEnum;
+import com.sparta.boardhanghae.entity.*;
 import com.sparta.boardhanghae.jwt.JwtUtil;
+import com.sparta.boardhanghae.repository.BoardLikeRepository;
 import com.sparta.boardhanghae.repository.BoardRepository;
 import com.sparta.boardhanghae.repository.ReplyRepository;
 import com.sparta.boardhanghae.repository.UserRepository;
@@ -32,6 +30,7 @@ public class BoardService {
 
     private static final Logger logger = LoggerFactory.getLogger(BoardService.class);
     private final ReplyRepository replyRepository;
+    private final BoardLikeRepository boardLikeRepository;
 
     //게시글 작성 서비스
     @Transactional
@@ -145,5 +144,22 @@ public class BoardService {
                 () -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다.")
         );
         return board;
+    }
+
+    @Transactional
+    public BoardResponseDto likeBoard(Long id, HttpServletRequest request) {
+        String token = jwtUtil.resolveToken((request));
+        Claims claims = tokenValid(token);
+        User user = userValid(claims);
+        Board board = boardIdValid(id);
+        if (boardLikeRepository.findByBoardIdAndUserId(id, user.getId()).isPresent()){
+            board.like((board.getLikeCount()) - 1);
+            boardLikeRepository.deleteBoardLikeByUserId(user.getId());
+        }else{
+            board.like((board.getLikeCount()) + 1);
+            BoardLike boardLike = new BoardLike(user, board);
+            boardLikeRepository.save(boardLike);
+        }
+        return new BoardResponseDto(board);
     }
 }

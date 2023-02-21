@@ -18,12 +18,14 @@ public class Board extends Timestamped{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private int likeCount;
 
     @Column(nullable = false)
     private String title;
 
     @Column(nullable = false)
     private String content;
+
 
     @ManyToOne
     @JoinColumn(name = "USER_ID", nullable = false)
@@ -37,6 +39,7 @@ public class Board extends Timestamped{
         this.title = requestDTO.getTitle();
         this.content = requestDTO.getContent();
         this.user = user;
+        this.likeCount = 0;
     }
     public void update(BoardRequestDto boardRequestDTO){
         logger.info("Board Entity 정상 실행2/관리자 수정");
@@ -49,5 +52,8 @@ public class Board extends Timestamped{
         this.title = boardRequestDTO.getTitle();
         this.content = boardRequestDTO.getContent();
         this.user = user;
+    }
+    public void like(int count) {
+        this.likeCount = count;
     }
 }

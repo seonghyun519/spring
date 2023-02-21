@@ -15,6 +15,8 @@ public class BoardResponseDto {
     private String username;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
+    private int like;
+
 
     private List<ReplyResponseDto> replyList = new ArrayList<>();
 
@@ -24,6 +26,7 @@ public class BoardResponseDto {
         this.createdAt = board.getCreatedAt();
         this.modifiedAt = board.getModifiedAt();
         this.username = board.getUser().getUsername();
+        this.like = board.getLikeCount();
 
         for (Reply reply : board.getReplyList()){
             this.replyList.add(new ReplyResponseDto(reply));
@@ -35,6 +38,7 @@ public class BoardResponseDto {
         this.createdAt = board.getCreatedAt();
         this.modifiedAt = board.getModifiedAt();
         this.username = board.getUser().getUsername();
+        this.like = board.getLikeCount();
 
         this.replyList = reply;
     }

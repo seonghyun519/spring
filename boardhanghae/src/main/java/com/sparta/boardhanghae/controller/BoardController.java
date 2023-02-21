@@ -2,6 +2,7 @@ package com.sparta.boardhanghae.controller;
 
 import com.sparta.boardhanghae.dto.BoardRequestDto;
 import com.sparta.boardhanghae.dto.BoardResponseDto;
+import com.sparta.boardhanghae.dto.ReplyResponseDto;
 import com.sparta.boardhanghae.dto.statusCodeResponseDto;
 import com.sparta.boardhanghae.service.BoardService;
 import lombok.RequiredArgsConstructor;
@@ -40,5 +41,9 @@ public class BoardController {
     @DeleteMapping("/{id}")
     public statusCodeResponseDto deleteBoard(@PathVariable Long id, HttpServletRequest request) {
         return boardService.deleteBoard(id, request);
+    }
+    @PostMapping("/{id}/like")
+    public BoardResponseDto likeBoard(@PathVariable Long id, HttpServletRequest request) {
+        return boardService.likeBoard(id, request);
     }
 }

@@ -6,7 +6,7 @@ import com.sparta.boardhanghae.dto.statusCodeResponseDto;
 import com.sparta.boardhanghae.entity.*;
 import com.sparta.boardhanghae.jwt.JwtUtil;
 import com.sparta.boardhanghae.repository.BoardRepository;
-import com.sparta.boardhanghae.repository.LikeRepository;
+import com.sparta.boardhanghae.repository.ReplyLikeRepository;
 import com.sparta.boardhanghae.repository.ReplyRepository;
 import com.sparta.boardhanghae.repository.UserRepository;
 import io.jsonwebtoken.Claims;
@@ -24,7 +24,7 @@ public class ReplyService {
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
-    private final LikeRepository likeRepository;
+    private final ReplyLikeRepository replyLikeRepository;
 
     @Transactional
     public ReplyResponseDto createReply(Long id, ReplyRequestDto replyRequestDto, HttpServletRequest request) {
@@ -77,13 +77,13 @@ public class ReplyService {
         Reply reply = replyRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다.")
         );
-        if (likeRepository.findByReplyIdAndUserId(id, user.getId()).isPresent()){
+        if (replyLikeRepository.findByReplyIdAndUserId(id, user.getId()).isPresent()){
             reply.like((reply.getLikeCount()) - 1);
-            likeRepository.deleteReplyLikeByUserId(user.getId());
+            replyLikeRepository.deleteReplyLikeByUserId(user.getId());
         }else{
             reply.like((reply.getLikeCount()) + 1);
             ReplyLike replyLike = new ReplyLike(user, reply);
-            likeRepository.save(replyLike);
+            replyLikeRepository.save(replyLike);
         }
         return new ReplyResponseDto(reply);
     }
