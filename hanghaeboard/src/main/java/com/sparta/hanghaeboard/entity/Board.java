@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -27,6 +28,9 @@ public class Board extends Timestamped{
     @ManyToOne
     @JoinColumn(name = "USER_ID", nullable = false)
     private User user;
+
+    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
+    private List<Reply> replyList = new ArrayList<>();
 
     public Board(BoardRequestDto requestDTO, User user){
         logger.info("Board Entity 정상 실행1");

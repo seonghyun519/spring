@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Like {
+public class ReplyLike {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -20,7 +20,7 @@ public class Like {
     @JoinColumn(name = "REPLY_ID")
     Reply reply;
 
-    public Like(User user, Reply reply) {
+    public ReplyLike(User user, Reply reply) {
         this.user = user;
         this.reply = reply;
     }

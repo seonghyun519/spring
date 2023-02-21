@@ -7,6 +7,7 @@ import com.sparta.myselectshop.entity.UserRoleEnum;
 import com.sparta.myselectshop.jwt.JwtUtil;
 import com.sparta.myselectshop.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +18,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserService {
 
+    private final PasswordEncoder passwordEncoder; //Spring Security 인코더 추가(비밀번호 암호화)
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil; //jwtUtil 의존성 주입 //jwtUtil @Component 사용되어 빈이 등록되어 의존성 주입이됨
 
@@ -26,7 +28,7 @@ public class UserService {
     @Transactional
     public void signup(SignupRequestDto signupRequestDto) {
         String username = signupRequestDto.getUsername();
-        String password = signupRequestDto.getPassword();
+        String password = passwordEncoder.encode(signupRequestDto.getPassword());
 
         // 회원 중복 확인
         Optional<User> found = userRepository.findByUsername(username);
@@ -57,8 +59,8 @@ public class UserService {
         User user = userRepository.findByUsername(username).orElseThrow(
                 () -> new IllegalArgumentException("등록된 사용자가 없습니다.")
         );
-        // 비밀번호 확인
-        if(!user.getPassword().equals(password)){
+        // 비밀번호 확인 //스프링 시큐리티 passwordEncoder 사용
+        if(!passwordEncoder.matches(password, user.getPassword())){
             throw  new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
 

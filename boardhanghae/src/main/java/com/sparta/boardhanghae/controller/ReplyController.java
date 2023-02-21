@@ -1,8 +1,9 @@
-package com.sparta.hanghaeboard.controller;
+package com.sparta.boardhanghae.controller;
 
-import com.sparta.hanghaeboard.dto.*;
-import com.sparta.hanghaeboard.entity.Reply;
-import com.sparta.hanghaeboard.service.ReplyService;
+import com.sparta.boardhanghae.dto.ReplyRequestDto;
+import com.sparta.boardhanghae.dto.ReplyResponseDto;
+import com.sparta.boardhanghae.dto.statusCodeResponseDto;
+import com.sparta.boardhanghae.service.ReplyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

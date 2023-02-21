@@ -1,6 +1,6 @@
-package com.sparta.hanghaeboard.entity;
+package com.sparta.boardhanghae.entity;
 
-import com.sparta.hanghaeboard.dto.BoardRequestDto;
+import com.sparta.boardhanghae.dto.BoardRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.slf4j.Logger;

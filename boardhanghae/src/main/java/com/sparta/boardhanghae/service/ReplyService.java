@@ -1,14 +1,14 @@
-package com.sparta.hanghaeboard.service;
+package com.sparta.boardhanghae.service;
 
-import com.sparta.hanghaeboard.dto.ReplyRequestDto;
-import com.sparta.hanghaeboard.dto.ReplyResponseDto;
-import com.sparta.hanghaeboard.dto.statusCodeResponseDto;
-import com.sparta.hanghaeboard.entity.*;
-import com.sparta.hanghaeboard.jwt.JwtUtil;
-import com.sparta.hanghaeboard.repository.BoardRepository;
-import com.sparta.hanghaeboard.repository.LikeRepository;
-import com.sparta.hanghaeboard.repository.ReplyRepository;
-import com.sparta.hanghaeboard.repository.UserRepository;
+import com.sparta.boardhanghae.dto.ReplyRequestDto;
+import com.sparta.boardhanghae.dto.ReplyResponseDto;
+import com.sparta.boardhanghae.dto.statusCodeResponseDto;
+import com.sparta.boardhanghae.entity.*;
+import com.sparta.boardhanghae.jwt.JwtUtil;
+import com.sparta.boardhanghae.repository.BoardRepository;
+import com.sparta.boardhanghae.repository.LikeRepository;
+import com.sparta.boardhanghae.repository.ReplyRepository;
+import com.sparta.boardhanghae.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

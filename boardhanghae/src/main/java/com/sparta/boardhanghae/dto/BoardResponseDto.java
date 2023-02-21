@@ -1,7 +1,7 @@
-package com.sparta.hanghaeboard.dto;
+package com.sparta.boardhanghae.dto;
 
-import com.sparta.hanghaeboard.entity.Board;
-import com.sparta.hanghaeboard.entity.Reply;
+import com.sparta.boardhanghae.entity.Board;
+import com.sparta.boardhanghae.entity.Reply;
 import lombok.Getter;
 
 import java.time.LocalDateTime;

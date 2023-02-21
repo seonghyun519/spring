@@ -1,6 +1,7 @@
-package com.sparta.hanghaeboard.repository;
+package com.sparta.boardhanghae.repository;
 
-import com.sparta.hanghaeboard.entity.Board;
+
+import com.sparta.boardhanghae.entity.Board;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

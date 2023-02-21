@@ -2,12 +2,15 @@ package com.sparta.hanghaeboard.service;
 
 import com.sparta.hanghaeboard.dto.BoardRequestDto;
 import com.sparta.hanghaeboard.dto.BoardResponseDto;
+import com.sparta.hanghaeboard.dto.ReplyResponseDto;
 import com.sparta.hanghaeboard.dto.statusCodeResponseDto;
 import com.sparta.hanghaeboard.entity.Board;
+import com.sparta.hanghaeboard.entity.Reply;
 import com.sparta.hanghaeboard.entity.User;
 import com.sparta.hanghaeboard.entity.UserRoleEnum;
 import com.sparta.hanghaeboard.jwt.JwtUtil;
 import com.sparta.hanghaeboard.repository.BoardRepository;
+import com.sparta.hanghaeboard.repository.ReplyRepository;
 import com.sparta.hanghaeboard.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +31,7 @@ public class BoardService {
     private final JwtUtil jwtUtil;
 
     private static final Logger logger = LoggerFactory.getLogger(BoardService.class);
+    private final ReplyRepository replyRepository;
 
     //게시글 작성 서비스
     @Transactional
@@ -61,7 +65,12 @@ public class BoardService {
         logger.info("BoardService getDetailBoard 동작");
         Board board = boardIdValid(id);
         BoardResponseDto boardResponseDTO = new BoardResponseDto(board);
-        return boardResponseDTO;
+        List<Reply> replyList = replyRepository.findAllByBoardIdOrderByModifiedAtDesc(id);
+        List<ReplyResponseDto> replyResponseDto = new ArrayList<>();
+        for (Reply reply : replyList){
+            replyResponseDto.add(new ReplyResponseDto(reply));
+        }
+        return new BoardResponseDto(board, replyResponseDto);
     }
 
 

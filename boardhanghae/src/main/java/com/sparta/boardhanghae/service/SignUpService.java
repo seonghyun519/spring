@@ -1,11 +1,11 @@
-package com.sparta.hanghaeboard.service;
+package com.sparta.boardhanghae.service;
 
-import com.sparta.hanghaeboard.dto.SignUpRequestDto;
-import com.sparta.hanghaeboard.dto.statusCodeResponseDto;
-import com.sparta.hanghaeboard.entity.User;
-import com.sparta.hanghaeboard.entity.UserRoleEnum;
-import com.sparta.hanghaeboard.jwt.JwtUtil;
-import com.sparta.hanghaeboard.repository.SignUpRepository;
+import com.sparta.boardhanghae.dto.SignUpRequestDto;
+import com.sparta.boardhanghae.dto.statusCodeResponseDto;
+import com.sparta.boardhanghae.entity.User;
+import com.sparta.boardhanghae.entity.UserRoleEnum;
+import com.sparta.boardhanghae.jwt.JwtUtil;
+import com.sparta.boardhanghae.repository.SignUpRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

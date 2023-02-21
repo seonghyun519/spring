@@ -1,7 +1,7 @@
-package com.sparta.hanghaeboard.jwt;
+package com.sparta.boardhanghae.jwt;
 
 
-import com.sparta.hanghaeboard.entity.UserRoleEnum;
+import com.sparta.boardhanghae.entity.UserRoleEnum;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;

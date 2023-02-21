@@ -19,7 +19,7 @@ public class SignUpController {
 
     private final SignUpService signUpService;
 
-    @PostMapping("/signup")
+    @PostMapping("/signup") // Login과 SignUp = Account 계정 관련 !
     public statusCodeResponseDto signup(@RequestBody @Valid SignUpRequestDto signupRequestDto) {
         return signUpService.signUp(signupRequestDto);
     }

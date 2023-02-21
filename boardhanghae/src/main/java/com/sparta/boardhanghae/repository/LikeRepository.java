@@ -1,8 +1,7 @@
-package com.sparta.hanghaeboard.repository;
+package com.sparta.boardhanghae.repository;
 
-import com.sparta.hanghaeboard.entity.Reply;
-import com.sparta.hanghaeboard.entity.ReplyLike;
-import com.sparta.hanghaeboard.entity.User;
+
+import com.sparta.boardhanghae.entity.ReplyLike;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

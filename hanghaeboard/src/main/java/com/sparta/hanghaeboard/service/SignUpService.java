@@ -34,18 +34,25 @@ public class SignUpService {
             throw new IllegalArgumentException("중복된 사용자가 존재합니다.");
         }
 
-        // 사용자 ROLE 확인
+        // 사용자 ROLE 확인 //정리 필요
         UserRoleEnum role = UserRoleEnum.USER;
-        if (signupRequestDto.isAdmin()) {
-            if (!signupRequestDto.getAdminToken().equals(ADMIN_TOKEN)) {
+        if (!signupRequestDto.getJwtSecretKey().isEmpty()) {
+            if (!signupRequestDto.getJwtSecretKey().equals(ADMIN_TOKEN)) {
                 throw new IllegalArgumentException("관리자 암호가 틀려 등록이 불가능합니다.");
+            } else{
+                role = UserRoleEnum.ADMIN;
             }
-        } else if (signupRequestDto.getJwtSecretKey().equals(jwtSecretKey)) {
-            role = UserRoleEnum.ADMIN;
         }
-
         User user = new User(username, pwd, role);
         signUpRepository.save(user);
         return new statusCodeResponseDto("회원가입 완료", 200);
+    }
+
+    public boolean roleChek(SignUpRequestDto dto) {
+        if (dto.getAdminToken().equals(jwtSecretKey)){
+            return true;
+        }else {
+            return false;
+        }
     }
 }

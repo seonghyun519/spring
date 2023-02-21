@@ -1,4 +1,4 @@
-package com.sparta.hanghaeboard.entity;
+package com.sparta.boardhanghae.entity;
 
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;

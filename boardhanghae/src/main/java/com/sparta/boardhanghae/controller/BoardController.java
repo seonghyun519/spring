@@ -1,10 +1,9 @@
-package com.sparta.hanghaeboard.controller;
+package com.sparta.boardhanghae.controller;
 
-import com.sparta.hanghaeboard.dto.BoardRequestDto;
-import com.sparta.hanghaeboard.dto.BoardResponseDto;
-import com.sparta.hanghaeboard.dto.ReplyResponseDto;
-import com.sparta.hanghaeboard.dto.statusCodeResponseDto;
-import com.sparta.hanghaeboard.service.BoardService;
+import com.sparta.boardhanghae.dto.BoardRequestDto;
+import com.sparta.boardhanghae.dto.BoardResponseDto;
+import com.sparta.boardhanghae.dto.statusCodeResponseDto;
+import com.sparta.boardhanghae.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

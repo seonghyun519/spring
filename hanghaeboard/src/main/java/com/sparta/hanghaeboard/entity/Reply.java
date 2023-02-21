@@ -1,7 +1,6 @@
 package com.sparta.hanghaeboard.entity;
 
 import com.sparta.hanghaeboard.dto.ReplyRequestDto;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -9,14 +8,15 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-@AllArgsConstructor
+//@AllArgsConstructor
 @NoArgsConstructor
-public class Reply extends Timestamped{
+public class Reply extends Timestamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String content;
+    private int likeCount;
 
     @ManyToOne
     @JoinColumn(name = "USER_ID")
@@ -25,13 +25,18 @@ public class Reply extends Timestamped{
     @JoinColumn(name = "BOARD_ID")
     private Board board;
 
-    public Reply(User user, Board board, String content){
+    public Reply(User user, Board board, String content) {
         this.user = user;
         this.board = board;
         this.content = content;
+        this.likeCount = 0;
     }
 
-    public  void update(ReplyRequestDto requestDto){
+    public void update(ReplyRequestDto requestDto) {
         this.content = requestDto.getContent();
+    }
+
+    public void like(int count) {
+        this.likeCount = count;
     }
 }

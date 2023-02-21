@@ -2,6 +2,7 @@ package com.sparta.hanghaeboard.controller;
 
 import com.sparta.hanghaeboard.dto.BoardRequestDto;
 import com.sparta.hanghaeboard.dto.BoardResponseDto;
+import com.sparta.hanghaeboard.dto.ReplyResponseDto;
 import com.sparta.hanghaeboard.dto.statusCodeResponseDto;
 import com.sparta.hanghaeboard.service.BoardService;
 import lombok.RequiredArgsConstructor;

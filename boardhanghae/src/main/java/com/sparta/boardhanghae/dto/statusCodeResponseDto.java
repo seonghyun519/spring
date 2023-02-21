@@ -1,4 +1,4 @@
-package com.sparta.hanghaeboard.dto;
+package com.sparta.boardhanghae.dto;
 
 import lombok.Getter;
 @Getter
