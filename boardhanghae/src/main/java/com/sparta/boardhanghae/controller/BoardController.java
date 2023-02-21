@@ -4,10 +4,12 @@ import com.sparta.boardhanghae.dto.BoardRequestDto;
 import com.sparta.boardhanghae.dto.BoardResponseDto;
 import com.sparta.boardhanghae.dto.ReplyResponseDto;
 import com.sparta.boardhanghae.dto.statusCodeResponseDto;
+import com.sparta.boardhanghae.security.UserDetailsImpl;
 import com.sparta.boardhanghae.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,19 +33,19 @@ public class BoardController {
     }
 
     @PostMapping("") //게시글 생성 api
-    public BoardResponseDto createBoard(@RequestBody BoardRequestDto boardRequestDto, HttpServletRequest request) {
-        return boardService.createBoard(boardRequestDto, request);
+    public BoardResponseDto createBoard(@RequestBody BoardRequestDto boardRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return boardService.createBoard(boardRequestDto, userDetails.getUser());
     }
     @PutMapping("/{id}") //수정 api
-    public BoardResponseDto updateBoard(@PathVariable Long id, @RequestBody BoardRequestDto boardRequestDto, HttpServletRequest request) {
-        return boardService.update(id, boardRequestDto, request);
+    public BoardResponseDto updateBoard(@PathVariable Long id, @RequestBody BoardRequestDto boardRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return boardService.update(id, boardRequestDto, userDetails.getUser());
     }
     @DeleteMapping("/{id}")
-    public statusCodeResponseDto deleteBoard(@PathVariable Long id, HttpServletRequest request) {
-        return boardService.deleteBoard(id, request);
+    public statusCodeResponseDto deleteBoard(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return boardService.deleteBoard(id, userDetails.getUser());
     }
     @PostMapping("/{id}/like")
-    public BoardResponseDto likeBoard(@PathVariable Long id, HttpServletRequest request) {
-        return boardService.likeBoard(id, request);
+    public BoardResponseDto likeBoard(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return boardService.likeBoard(id, userDetails.getUser());
     }
 }

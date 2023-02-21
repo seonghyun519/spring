@@ -22,16 +22,11 @@ public class ReplyService {
 
     private final ReplyRepository replyRepository;
     private final BoardRepository boardRepository;
-    private final UserRepository userRepository;
-    private final JwtUtil jwtUtil;
     private final ReplyLikeRepository replyLikeRepository;
 
     @Transactional
-    public ReplyResponseDto createReply(Long id, ReplyRequestDto replyRequestDto, HttpServletRequest request) {
-        String token = jwtUtil.resolveToken(request);
-        Claims claims = tokenValid(token);
+    public ReplyResponseDto createReply(Long id, ReplyRequestDto replyRequestDto, User user) {
         Board board = boardIdValid(id);
-        User user = userValid(claims);
         Reply reply = new Reply(user, board, replyRequestDto.getContent());
         replyRepository.save(reply);
 
@@ -39,10 +34,7 @@ public class ReplyService {
     }
 
     @Transactional
-    public ReplyResponseDto updateReply(Long id, ReplyRequestDto replyRequestDto, HttpServletRequest request) {
-        String token = jwtUtil.resolveToken(request);
-        Claims claims = tokenValid(token);
-        User user = userValid(claims);
+    public ReplyResponseDto updateReply(Long id, ReplyRequestDto replyRequestDto, User user) {
         if (UserRoleEnum.ADMIN.equals(user.getRole())) {
             Reply reply = replyIdValid(id);
             reply.update(replyRequestDto);
@@ -54,10 +46,7 @@ public class ReplyService {
     }
 
     @Transactional
-    public statusCodeResponseDto deleteReply(Long id, HttpServletRequest request) {
-        String token = jwtUtil.resolveToken(request);
-        Claims claims = tokenValid(token);
-        User user = userValid(claims);
+    public statusCodeResponseDto deleteReply(Long id, User user) {
         if (UserRoleEnum.ADMIN.equals(user.getRole())) {
             Reply reply = replyIdValid(id);
             replyRepository.delete(reply);
@@ -70,10 +59,7 @@ public class ReplyService {
 
     //좋아요
     @Transactional
-    public ReplyResponseDto likeReply(Long id, HttpServletRequest request) {
-        String token = jwtUtil.resolveToken((request));
-        Claims claims = tokenValid(token);
-        User user = userValid(claims);
+    public ReplyResponseDto likeReply(Long id, User user) {
         Reply reply = replyRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다.")
         );
@@ -88,25 +74,6 @@ public class ReplyService {
         return new ReplyResponseDto(reply);
     }
 
-
-    //토큰 유효성 검사
-    public Claims tokenValid(String token) {
-        if (token != null) {
-            if (!(jwtUtil.validateToken(token))) {
-                throw new IllegalArgumentException("Token Error");
-            }
-        }
-        return jwtUtil.getUserInfoFromToken(token);
-    }
-
-    //유저 정보 유효성 검사
-    public User userValid(Claims claims) {
-        User user = userRepository.findByUsername(claims.getSubject()).orElseThrow(
-                () -> new IllegalArgumentException("사용자가 존재하지 않습니다.")
-        );
-        return user;
-    }
-
     //게시글 유무 확인
     public Board boardIdValid(Long id) {
         Board board = boardRepository.findById(id).orElseThrow(
@@ -114,7 +81,6 @@ public class ReplyService {
         );
         return board;
     }
-
     //댓글 유무 확인
     public Reply replyIdValid(Long id) {
         Reply reply = replyRepository.findById(id).orElseThrow(
@@ -130,6 +96,4 @@ public class ReplyService {
         );
         return reply;
     }
-
-
 }

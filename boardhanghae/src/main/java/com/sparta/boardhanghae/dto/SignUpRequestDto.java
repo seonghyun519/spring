@@ -15,7 +15,6 @@ public class SignUpRequestDto {
     @Size(min=8, max=15)
     @Pattern(regexp = "^[A-Za-z0-9]+$")
     private String pwd;
-    private boolean admin = false;
     private String adminToken = "";
     private String jwtSecretKey ="";
 }

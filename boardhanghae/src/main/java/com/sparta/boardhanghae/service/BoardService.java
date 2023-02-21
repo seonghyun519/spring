@@ -34,12 +34,8 @@ public class BoardService {
 
     //게시글 작성 서비스
     @Transactional
-    public BoardResponseDto createBoard(BoardRequestDto boardRequestDTO, HttpServletRequest request) {
+    public BoardResponseDto createBoard(BoardRequestDto boardRequestDTO, User user) {
         logger.info("BoardService createBoard 동작");
-
-        String token = jwtUtil.resolveToken(request);
-        Claims claims = tokenValid(token);
-        User user = userValid(claims);
         Board board = new Board(boardRequestDTO, user);
         boardRepository.save(board);
         return new BoardResponseDto(board);
@@ -75,13 +71,8 @@ public class BoardService {
 
     //수정 서비스
     @Transactional
-    public BoardResponseDto update(Long id, BoardRequestDto boardRequestDTO, HttpServletRequest request) {
+    public BoardResponseDto update(Long id, BoardRequestDto boardRequestDTO, User user) {
         logger.info("BoardService updateBoard 동작");
-
-
-        String token = jwtUtil.resolveToken(request);
-        Claims claims = tokenValid(token);
-        User user = userValid(claims);
         if (user.getRole() == UserRoleEnum.ADMIN) {
             Board board = boardIdValid(id);
             board.update(boardRequestDTO);
@@ -96,11 +87,8 @@ public class BoardService {
 
     //삭제 서비스
     @Transactional
-    public statusCodeResponseDto deleteBoard(Long id, HttpServletRequest request) {
+    public statusCodeResponseDto deleteBoard(Long id, User user) {
         logger.info("BoardService deleteBoard 동작");
-        String token = jwtUtil.resolveToken(request);
-        Claims claims = tokenValid(token);
-        User user = userValid(claims);
         if (user.getRole() == UserRoleEnum.ADMIN) {
             boardRepository.delete(boardIdValid(id));
             return new statusCodeResponseDto("게시글 삭제 성공", 200);
@@ -109,48 +97,10 @@ public class BoardService {
 
         boardRepository.delete(board);
         return new statusCodeResponseDto("게시글 삭제 성공", 200);
-//            return new statusCodeResponseDto("게시글 삭제 실패", 87);
-    }
-    //토큰 유효성 검사
-    public Claims tokenValid(String token) {
-        if (token != null) {
-            if (!(jwtUtil.validateToken(token))) {
-                throw new IllegalArgumentException("Token Error");
-            }
-        }
-        return jwtUtil.getUserInfoFromToken(token);
-    }
-
-    //유저 정보 유효성 검사
-    public User userValid(Claims claims) {
-        User user = userRepository.findByUsername(claims.getSubject()).orElseThrow(
-                () -> new IllegalArgumentException("사용자가 존재하지 않습니다.")
-        );
-        return user;
-    }
-
-    //board 게시글의 유저정보와 동일여부 검사
-    public Board boardIdByUserValid(Long id, User user) {
-        Board board = boardRepository.findByIdAndUserId(id, user.getId()).orElseThrow(
-                () -> new NullPointerException("본인이 작성한 글이 아닙니다")
-        );
-
-        return board;
-    }
-
-    //게시글 유무 확인
-    public Board boardIdValid(Long id) {
-        Board board = boardRepository.findById(id).orElseThrow(
-                () -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다.")
-        );
-        return board;
     }
 
     @Transactional
-    public BoardResponseDto likeBoard(Long id, HttpServletRequest request) {
-        String token = jwtUtil.resolveToken((request));
-        Claims claims = tokenValid(token);
-        User user = userValid(claims);
+    public BoardResponseDto likeBoard(Long id, User user) {
         Board board = boardIdValid(id);
         if (boardLikeRepository.findByBoardIdAndUserId(id, user.getId()).isPresent()){
             board.like((board.getLikeCount()) - 1);
@@ -161,5 +111,21 @@ public class BoardService {
             boardLikeRepository.save(boardLike);
         }
         return new BoardResponseDto(board);
+    }
+
+    //board 게시글의 유저정보와 동일여부 검사
+    public Board boardIdByUserValid(Long id, User user) {
+        Board board = boardRepository.findByIdAndUserId(id, user.getId()).orElseThrow(
+                () -> new NullPointerException("본인이 작성한 글이 아닙니다")
+        );
+        return board;
+    }
+
+    //게시글 유무 확인
+    public Board boardIdValid(Long id) {
+        Board board = boardRepository.findById(id).orElseThrow(
+                () -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다.")
+        );
+        return board;
     }
 }
