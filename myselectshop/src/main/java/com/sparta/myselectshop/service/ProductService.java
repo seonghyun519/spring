@@ -34,7 +34,6 @@ public class ProductService {
 
         // 요청받은 DTO 로 DB에 저장할 객체 만들기
         Product product = productRepository.saveAndFlush(new Product(requestDto, user.getId()));
-
         return new ProductResponseDto(product);
     }
 

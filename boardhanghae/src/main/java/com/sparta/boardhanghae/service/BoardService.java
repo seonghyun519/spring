@@ -10,14 +10,12 @@ import com.sparta.boardhanghae.repository.BoardLikeRepository;
 import com.sparta.boardhanghae.repository.BoardRepository;
 import com.sparta.boardhanghae.repository.ReplyRepository;
 import com.sparta.boardhanghae.repository.UserRepository;
-import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,7 +57,7 @@ public class BoardService {
     public BoardResponseDto getDetailBoard(Long id) {
         logger.info("BoardService getDetailBoard 동작");
         Board board = boardIdValid(id);
-        BoardResponseDto boardResponseDTO = new BoardResponseDto(board);
+//        BoardResponseDto boardResponseDTO = new BoardResponseDto(board);
         List<Reply> replyList = replyRepository.findAllByBoardIdOrderByModifiedAtDesc(id);
         List<ReplyResponseDto> replyResponseDto = new ArrayList<>();
         for (Reply reply : replyList){
