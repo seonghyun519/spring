@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -24,6 +26,9 @@ public class Reply extends Timestamped {
     @ManyToOne
     @JoinColumn(name = "BOARD_ID")
     private Board board;
+
+    @OneToMany(mappedBy = "reply", cascade = CascadeType.REMOVE)
+    private List<ReplyLike> ReplyLikes = new ArrayList<>();
 
     public Reply(User user, Board board, String content) {
         this.user = user;

@@ -35,6 +35,7 @@ public class UserDetailsImpl implements UserDetails {
         return authorities;
     }
 
+    //인터페이스 현재 미사용
     @Override
     public String getUsername() {
         return this.username;

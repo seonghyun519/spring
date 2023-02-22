@@ -2,13 +2,10 @@ package com.sparta.boardhanghae.controller;
 
 import com.sparta.boardhanghae.dto.BoardRequestDto;
 import com.sparta.boardhanghae.dto.BoardResponseDto;
-import com.sparta.boardhanghae.dto.ReplyResponseDto;
 import com.sparta.boardhanghae.dto.statusCodeResponseDto;
 import com.sparta.boardhanghae.security.UserDetailsImpl;
 import com.sparta.boardhanghae.service.BoardService;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +17,6 @@ import java.util.List;
 @RequestMapping("/api/board")
 public class BoardController {
     private final BoardService boardService;
-    private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
 
     @GetMapping("") //게시글 전체
     public List<BoardResponseDto> getBoard() {

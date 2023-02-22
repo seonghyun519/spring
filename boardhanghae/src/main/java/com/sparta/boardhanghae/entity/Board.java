@@ -34,6 +34,9 @@ public class Board extends Timestamped{
     @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
     private List<Reply> replyList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
+    private List<BoardLike> boardLikes = new ArrayList<>();
+
     public Board(BoardRequestDto requestDTO, User user){
         logger.info("Board Entity 정상 실행1");
         this.title = requestDTO.getTitle();
