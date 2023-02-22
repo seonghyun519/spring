@@ -37,6 +37,10 @@ public class WebSecurityConfig {
         // h2-console 사용 및 resources 접근 허용 설정 //필터 거치지 않고 패스
         return (web) -> web.ignoring()
                 .requestMatchers(PathRequest.toH2Console())
+                .antMatchers("/api/v1/auth/**","/",
+                        "/v2/api-docs", "/swagger-resources/**", "/swagger-ui/index.html", "/swagger-ui.html","/webjars/**", "/swagger/**",   // swagger
+                        "/h2-console/**",
+                        "/favicon.ico")
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }
 
@@ -55,7 +59,7 @@ public class WebSecurityConfig {
                 .and().addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
 
 
-        http.formLogin().loginPage("/api/user/login-page").permitAll();
+        http.formLogin().loginPage("/api/user/login-page").permitAll(); //로그인 페이지
 
 //        http.exceptionHandling().accessDeniedPage("/api/user/forbidden");
         http.exceptionHandling().accessDeniedPage("/api/auth/login");
