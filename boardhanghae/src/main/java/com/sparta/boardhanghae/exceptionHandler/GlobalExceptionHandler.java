@@ -23,6 +23,10 @@ public class GlobalExceptionHandler {
     public ResponseEntity<StatusCodeResponseDto<?>> handlefirst(Exception e) {
         return new ResponseEntity<>(StatusCodeResponseDto.fail(400, e.getMessage()), HttpStatus.BAD_REQUEST);
     }
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<StatusCodeResponseDto<?>> handlet(Exception e) {
+        return new ResponseEntity<>(StatusCodeResponseDto.fail(400, e.getMessage()), HttpStatus.BAD_REQUEST);
+    }
     @ExceptionHandler(NullPointerException.class)
     public ResponseEntity<StatusCodeResponseDto<?>> handletwo(Exception e) {
         return new ResponseEntity<>(StatusCodeResponseDto.fail(400, e.getMessage()), HttpStatus.BAD_REQUEST);
