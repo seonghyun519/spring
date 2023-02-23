@@ -2,19 +2,14 @@ package com.sparta.boardhanghae.service;
 
 import com.sparta.boardhanghae.dto.ReplyRequestDto;
 import com.sparta.boardhanghae.dto.ReplyResponseDto;
-import com.sparta.boardhanghae.dto.statusCodeResponseDto;
+import com.sparta.boardhanghae.dto.StatusCodeResponseDto;
 import com.sparta.boardhanghae.entity.*;
-import com.sparta.boardhanghae.jwt.JwtUtil;
 import com.sparta.boardhanghae.repository.BoardRepository;
 import com.sparta.boardhanghae.repository.ReplyLikeRepository;
 import com.sparta.boardhanghae.repository.ReplyRepository;
-import com.sparta.boardhanghae.repository.UserRepository;
-import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.servlet.http.HttpServletRequest;
 
 @Service
 @RequiredArgsConstructor
@@ -46,15 +41,15 @@ public class ReplyService {
     }
 
     @Transactional
-    public statusCodeResponseDto deleteReply(Long id, User user) {
+    public StatusCodeResponseDto deleteReply(Long id, User user) {
         if (UserRoleEnum.ADMIN.equals(user.getRole())) {
             Reply reply = replyIdValid(id);
             replyRepository.delete(reply);
-            return new statusCodeResponseDto("댓글 삭제 성공", 200);
+            return StatusCodeResponseDto.ok("댓글 삭제 성공");
         }
         Reply reply = replyIdByUserValid(id, user);
         replyRepository.delete(reply);
-        return new statusCodeResponseDto("댓글 삭제 성공", 200);
+        return StatusCodeResponseDto.ok("댓글 삭제 성공");
     }
 
     //좋아요

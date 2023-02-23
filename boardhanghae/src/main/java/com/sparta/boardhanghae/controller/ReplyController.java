@@ -2,14 +2,12 @@ package com.sparta.boardhanghae.controller;
 
 import com.sparta.boardhanghae.dto.ReplyRequestDto;
 import com.sparta.boardhanghae.dto.ReplyResponseDto;
-import com.sparta.boardhanghae.dto.statusCodeResponseDto;
+import com.sparta.boardhanghae.dto.StatusCodeResponseDto;
 import com.sparta.boardhanghae.security.UserDetailsImpl;
 import com.sparta.boardhanghae.service.ReplyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,7 +26,7 @@ public class ReplyController {
     }
 
     @DeleteMapping("/{id}/reply")
-    public statusCodeResponseDto deleteReply(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public StatusCodeResponseDto deleteReply(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return replyService.deleteReply(id, userDetails.getUser());
     }
 

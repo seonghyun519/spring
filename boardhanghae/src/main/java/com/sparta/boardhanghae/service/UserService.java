@@ -1,10 +1,9 @@
 package com.sparta.boardhanghae.service;
 
 import com.sparta.boardhanghae.dto.LoginRequestDto;
-import com.sparta.boardhanghae.dto.statusCodeResponseDto;
+import com.sparta.boardhanghae.dto.StatusCodeResponseDto;
 import com.sparta.boardhanghae.entity.User;
 import com.sparta.boardhanghae.jwt.JwtUtil;
-import com.sparta.boardhanghae.repository.SignUpRepository;
 import com.sparta.boardhanghae.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,7 +22,7 @@ public class UserService {
 
 
     @Transactional(readOnly = true)
-    public statusCodeResponseDto login(LoginRequestDto loginRequestDto, HttpServletResponse response) {
+    public StatusCodeResponseDto login(LoginRequestDto loginRequestDto, HttpServletResponse response) {
         String username = loginRequestDto.getUsername();
         String pwd = loginRequestDto.getPwd();
 
@@ -37,6 +36,6 @@ public class UserService {
         }
 
         response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(user.getUsername(), user.getRole()));
-        return new statusCodeResponseDto("로그인 완료", 200);
+        return StatusCodeResponseDto.ok("로그인 완료");
     }
 }

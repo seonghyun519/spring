@@ -16,23 +16,18 @@ public class BoardResponseDto {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
     private int like;
-
-
     private List<ReplyResponseDto> replyList = new ArrayList<>();
 
-    public BoardResponseDto(Board board) {
+    //sort가 빠를까 for문이 빠를까
+    public BoardResponseDto(Board board) { //전체 페이지
         this.title = board.getTitle();
         this.content = board.getContent();
         this.createdAt = board.getCreatedAt();
         this.modifiedAt = board.getModifiedAt();
         this.username = board.getUser().getUsername();
         this.like = board.getLikeCount();
-
-        for (Reply reply : board.getReplyList()){
-            this.replyList.add(new ReplyResponseDto(reply));
-        }
     }
-    public BoardResponseDto(Board board, List<ReplyResponseDto> reply) {
+    public BoardResponseDto(Board board, List<ReplyResponseDto> reply) { //상세 페이지
         this.title = board.getTitle();
         this.content = board.getContent();
         this.createdAt = board.getCreatedAt();

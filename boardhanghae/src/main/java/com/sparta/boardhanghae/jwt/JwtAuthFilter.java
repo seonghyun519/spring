@@ -1,7 +1,7 @@
 package com.sparta.boardhanghae.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sparta.boardhanghae.dto.statusCodeResponseDto;
+import com.sparta.boardhanghae.dto.StatusCodeResponseDto;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -51,7 +51,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         response.setStatus(statusCode);
         response.setContentType("application/json");
         try {
-            String json = new ObjectMapper().writeValueAsString(new statusCodeResponseDto(msg, statusCode)); //ObjectMapper 매퍼를 통해 변환하여 반환
+            String json = new ObjectMapper().writeValueAsString(StatusCodeResponseDto.fail(statusCode, msg)); //ObjectMapper 매퍼를 통해 변환하여 반환
             response.getWriter().write(json);
         } catch (Exception e) {
             log.error(e.getMessage());

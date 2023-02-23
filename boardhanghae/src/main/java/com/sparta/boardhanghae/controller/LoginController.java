@@ -1,7 +1,7 @@
 package com.sparta.boardhanghae.controller;
 
 import com.sparta.boardhanghae.dto.LoginRequestDto;
-import com.sparta.boardhanghae.dto.statusCodeResponseDto;
+import com.sparta.boardhanghae.dto.StatusCodeResponseDto;
 import com.sparta.boardhanghae.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +17,7 @@ public class LoginController {
 
     @ResponseBody
     @PostMapping("/login")
-    public statusCodeResponseDto login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response) {
+    public StatusCodeResponseDto login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response) {
         return userService.login(loginRequestDto, response);
     }
 }
