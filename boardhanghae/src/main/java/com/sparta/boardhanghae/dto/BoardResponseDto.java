@@ -6,6 +6,7 @@ import lombok.Getter;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Getter
@@ -26,7 +27,11 @@ public class BoardResponseDto {
         this.modifiedAt = board.getModifiedAt();
         this.username = board.getUser().getUsername();
         this.like = board.getLikeCount();
-        for (Reply reply : board.getReplyList()) {
+
+        List<Reply>replies=board.getReplyList();
+        replies.sort(Comparator.comparing(Reply::getModifiedAt).reversed());
+        //reversed()역순 //디폴트가 오름차순으로 .reversed()로 역순 적용
+        for (Reply reply : replies) {
             this.replyList.add(new ReplyResponseDto(reply));
         }
     }
