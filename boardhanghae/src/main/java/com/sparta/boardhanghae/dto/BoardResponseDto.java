@@ -26,6 +26,9 @@ public class BoardResponseDto {
         this.modifiedAt = board.getModifiedAt();
         this.username = board.getUser().getUsername();
         this.like = board.getLikeCount();
+        for (Reply reply : board.getReplyList()) {
+            this.replyList.add(new ReplyResponseDto(reply));
+        }
     }
     public BoardResponseDto(Board board, List<ReplyResponseDto> reply) { //상세 페이지
         this.title = board.getTitle();

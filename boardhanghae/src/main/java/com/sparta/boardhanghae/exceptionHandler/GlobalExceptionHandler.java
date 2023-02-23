@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.function.EntityResponse;
 
 @ControllerAdvice
-public class GlobalExceptionHandler {
+public class GlobalExceptionHandler extends RuntimeException{
 
 //  <?>대신 <String> 확인하고 사용
     @ExceptionHandler(Exception.class)
