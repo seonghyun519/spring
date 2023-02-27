@@ -1,4 +1,4 @@
-package com.hanghaemini4.jaranghalram.dto;
+package com.sparta.boardhanghae.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;

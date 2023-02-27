@@ -1,21 +1,17 @@
 package com.sparta.boardhanghae.service;
 
-import com.sparta.boardhanghae.dto.BoardRequestDto;
-import com.sparta.boardhanghae.dto.BoardResponseDto;
-import com.sparta.boardhanghae.dto.ReplyResponseDto;
-import com.sparta.boardhanghae.dto.StatusCodeResponseDto;
+import com.sparta.boardhanghae.dto.*;
 import com.sparta.boardhanghae.entity.*;
 import com.sparta.boardhanghae.jwt.JwtUtil;
-import com.sparta.boardhanghae.repository.BoardLikeRepository;
-import com.sparta.boardhanghae.repository.BoardRepository;
-import com.sparta.boardhanghae.repository.ReplyRepository;
-import com.sparta.boardhanghae.repository.UserRepository;
+import com.sparta.boardhanghae.repository.*;
+import com.sparta.boardhanghae.s3.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,12 +19,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BoardService {
     private final BoardRepository boardRepository;
-    private final UserRepository userRepository;
-    private final JwtUtil jwtUtil;
-
     private static final Logger logger = LoggerFactory.getLogger(BoardService.class);
     private final ReplyRepository replyRepository;
     private final BoardLikeRepository boardLikeRepository;
+
+    //S3 Test
+    private final S3Uploader s3Uploader;
+    private final PostRepository postRepository;
 
     //게시글 작성 서비스
     @Transactional
@@ -117,5 +114,12 @@ public class BoardService {
                 () -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다.")
         );
         return board;
+    }
+
+    public ResponseDto<?> addPost(PostRequestDto requestDto) throws IOException {
+        String imageUrl = s3Uploader.uploadFiles(requestDto.getMultipartFile(), "images");
+        postRepository.save(new Post(imageUrl));
+
+        return ResponseDto.success("게시물 등록 성공");
     }
 }

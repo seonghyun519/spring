@@ -1,14 +1,14 @@
 package com.sparta.boardhanghae.controller;
 
-import com.sparta.boardhanghae.dto.BoardRequestDto;
-import com.sparta.boardhanghae.dto.BoardResponseDto;
-import com.sparta.boardhanghae.dto.StatusCodeResponseDto;
+import com.sparta.boardhanghae.dto.*;
 import com.sparta.boardhanghae.security.UserDetailsImpl;
 import com.sparta.boardhanghae.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -39,8 +39,13 @@ public class BoardController {
     public StatusCodeResponseDto deleteBoard(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return boardService.deleteBoard(id, userDetails.getUser());
     }
-    @PostMapping("/{id}/like")
+    @PostMapping("/{id}/likree")
     public StatusCodeResponseDto<String> likeBoard(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return boardService.likeBoard(id, userDetails.getUser());
+    }
+    @PostMapping("/add")
+    public ResponseDto<?> addPost(@RequestPart(value = "image") MultipartFile multipartFile) throws IOException {
+        PostRequestDto requestDto = new PostRequestDto(multipartFile);
+        return boardService.addPost(requestDto);
     }
 }
