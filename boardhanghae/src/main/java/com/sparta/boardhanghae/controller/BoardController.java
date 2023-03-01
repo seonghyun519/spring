@@ -39,7 +39,7 @@ public class BoardController {
     public StatusCodeResponseDto deleteBoard(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return boardService.deleteBoard(id, userDetails.getUser());
     }
-    @PostMapping("/{id}/likree")
+    @PostMapping("/{id}/liked")
     public StatusCodeResponseDto<String> likeBoard(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return boardService.likeBoard(id, userDetails.getUser());
     }

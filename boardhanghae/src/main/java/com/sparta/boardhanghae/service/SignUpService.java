@@ -44,7 +44,7 @@ public class SignUpService {
         return StatusCodeResponseDto.ok("회원가입 완료");
     }
 
-//    public boolean roleChek(SignUpRequestDto dto) { 이전에도 사용안함 체크 필요
+//    public boolean roleChek(SignUpRequestDto dto) { 권한 체크
 //        if (dto.getAdminToken().equals(jwtSecretKey)){
 //            return true;
 //        }else {
