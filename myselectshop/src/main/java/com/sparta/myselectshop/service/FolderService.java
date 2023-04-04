@@ -60,11 +60,13 @@ public class FolderService {
 
     @Transactional(readOnly = true)
     public Page<Product> getProductsInFolder(Long folderId, int page, int size, String sortBy, boolean isAsc, User user) {
+//    public Page<Product> getProductsInFolder(Long folderId, int page, int size, String sortBy, boolean isAsc, User user) {
 
         // 페이징 처리
         Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
         Sort sort = Sort.by(direction, sortBy);
-        Pageable pageable = PageRequest.of(page, size, sort);
+//        Pageable pageable = PageRequest.of(page, size, sort);
+        Pageable pageable = PageRequest.of(1, 99, sort);
 
 
         return productRepository.findAllByUserIdAndFolderList_Id(user.getId(), folderId, pageable);
