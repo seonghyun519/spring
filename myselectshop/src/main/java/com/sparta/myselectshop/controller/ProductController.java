@@ -13,6 +13,8 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
@@ -30,7 +32,7 @@ public class ProductController {
 
     // 관심 상품 조회하기
     @GetMapping("/products")
-    public Page<Product> getProducts(
+    public List<Product> getProducts(
             @RequestParam("page") int page,
             @RequestParam("size") int size,
             @RequestParam("sortBy") String sortBy,

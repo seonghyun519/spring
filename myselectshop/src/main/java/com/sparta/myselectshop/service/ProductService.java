@@ -18,6 +18,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -38,7 +40,7 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public Page<Product> getProducts(User user,
+    public List<Product> getProducts(User user,
                                      int page, int size, String sortBy, boolean isAsc) {
         // 페이징 처리
         Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
@@ -48,6 +50,7 @@ public class ProductService {
         UserRoleEnum userRoleEnum = user.getRole();
 
         Page<Product> products;
+        List<Product> productsList = new ArrayList<>();
 
         if (userRoleEnum == UserRoleEnum.USER) {
             // 사용자 권한이 USER일 경우
@@ -55,8 +58,9 @@ public class ProductService {
         } else {
             products = productRepository.findAll(pageable);
         }
+        productsList = products.getContent();
 
-        return products;
+        return productsList;
     }
 
     @Transactional
