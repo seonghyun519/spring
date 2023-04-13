@@ -89,7 +89,7 @@ public class ProductService {
 
         // 1) 상품을 조회합니다.
         Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new NullPointerException("해당 상품 아이디가 존재하지 않습니다."));
+                .orElseThrow(() -> new NullPointerException("해당 상품 아이디가 존재 하지 않습니다."));
 
         // 2) 관심상품을 조회합니다.
         Folder folder = folderRepository.findById(folderId)
