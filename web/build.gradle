@@ -33,6 +33,8 @@ dependencies {
 
     //Swagger
     implementation 'org.springdoc:springdoc-openapi-ui:1.6.6'
+    //json
+    implementation group: 'org.json', name: 'json', version: '20220924'
 }
 
 tasks.named('test') {

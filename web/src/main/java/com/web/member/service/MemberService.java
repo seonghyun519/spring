@@ -22,4 +22,6 @@ public class MemberService {
         memberRepository.save(member);
         return "회원가입 성공";
     }
+
+
 }
