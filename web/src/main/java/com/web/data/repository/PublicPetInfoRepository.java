@@ -1,4 +1,4 @@
-package com.web.member.repository;
+package com.web.data.repository;
 
 import com.web.common.entity.PetInfoByAPI;
 import org.springframework.data.jpa.repository.JpaRepository;

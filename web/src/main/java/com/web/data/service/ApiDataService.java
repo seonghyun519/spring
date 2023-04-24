@@ -1,4 +1,4 @@
-package com.web.member.service;
+package com.web.data.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

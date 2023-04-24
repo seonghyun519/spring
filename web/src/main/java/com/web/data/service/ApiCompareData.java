@@ -1,7 +1,7 @@
-package com.web.member.service;
+package com.web.data.service;
 
 import com.web.common.entity.PetInfoByAPI;
-import com.web.member.repository.PublicPetInfoRepository;
+import com.web.data.repository.PublicPetInfoRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.json.JSONArray;
@@ -36,7 +36,6 @@ public class ApiCompareData {
                 publicPetInfoRepository.save(petInfo);
             } else {
                 PetInfoByAPI petInfoByAPI = petInfoByAPIOptional.get();
-                //entity 클래스 필드 전체를 조회하기 보다 하드코딩으로 비교하는게 비용적으로 유리하다고 판단되지만 일단 보류
                 Field[] fields = petInfoByAPI.getClass().getDeclaredFields();
                 for (Field field : fields) {
                     field.setAccessible(true);

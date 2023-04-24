@@ -1,14 +1,12 @@
-package com.web.member.controller;
+package com.web.data.controller;
 
-import com.web.member.dto.PublicPetResponseDto;
-import com.web.member.service.ApiDataService;
-import com.web.member.service.PetInfoService;
+import com.web.data.dto.PublicPetResponseDto;
+import com.web.data.service.ApiDataService;
+import com.web.data.service.PetInfoService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;

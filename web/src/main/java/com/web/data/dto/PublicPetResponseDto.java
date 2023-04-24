@@ -1,11 +1,9 @@
-package com.web.member.dto;
+package com.web.data.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.web.common.entity.PetInfoByAPI;
 import lombok.Builder;
 import lombok.Getter;
-
-import javax.persistence.Column;
 
 @Getter
 @Builder

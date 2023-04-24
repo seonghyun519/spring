@@ -1,14 +1,13 @@
-package com.web.member.service;
+package com.web.data.service;
 
 import com.web.common.entity.PetInfoByAPI;
-import com.web.member.dto.PublicPetResponseDto;
-import com.web.member.repository.PublicPetInfoRepository;
+import com.web.data.dto.PublicPetResponseDto;
+import com.web.data.repository.PublicPetInfoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
