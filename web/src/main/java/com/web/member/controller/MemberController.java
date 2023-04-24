@@ -5,10 +5,7 @@ import com.web.member.service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -21,5 +18,10 @@ public class MemberController {
     @PostMapping("/signup")
     public String signup(@Validated @RequestBody SignupRequestDto signupRequestDto) {
         return memberService.signup(signupRequestDto);
+    }
+
+    @GetMapping("/login")
+    public String login(String memberId, String memberPassword){
+        return memberService.login(memberId, memberPassword);
     }
 }

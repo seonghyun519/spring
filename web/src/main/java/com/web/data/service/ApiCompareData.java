@@ -1,5 +1,6 @@
 package com.web.data.service;
 
+import com.web.common.annotation.LogExecutionTime;
 import com.web.common.entity.PetInfoByAPI;
 import com.web.data.repository.PublicPetInfoRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ public class ApiCompareData {
 //    private final ScrapRepository scrapRepository;
 
     @Transactional
+    @LogExecutionTime
     protected void compareData(JSONArray itemList, String state) {
         for (int i = 0; i < itemList.length(); i++) {
             JSONObject itemObject = itemList.getJSONObject(i);

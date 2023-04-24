@@ -18,13 +18,6 @@ public class ApiDataService {
         JSONArray itemList = apiClient.fetchDataFromApi(apiUrl);
 
         if (itemList != null) {
-            if (state.equals("notice")){
-                state = "NOTICE";
-            }else if(state.equals("protect")){
-                state = "PROTECT";
-            }else {
-                state = "END";
-            }
             apiCompareData.compareData(itemList, state);
         } else {
             log.error("API로부터 데이터를 받아오지 못했습니다.");

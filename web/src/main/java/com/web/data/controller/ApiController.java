@@ -24,7 +24,7 @@ public class ApiController {
 
     //    @SecurityRequirements
     @PostMapping("api-compare-data/{pageNo}")
-    @Operation(summary = "공공데이터 유기동물API 호출 및 DB 비교 최신화", description = "자세한 설명")
+    @Operation(summary = "공공데이터 유기동물API 호출 및 DB 비교 최신화", description = "state =NOTICE,PROTECT,END ")
     public String apiCompareData(@PathVariable(value = "pageNo") String pageNo,
                                  @RequestParam(value = "state") String state,
                                  @RequestParam(value = "size") String size) throws IOException {
