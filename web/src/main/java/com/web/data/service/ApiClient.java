@@ -1,5 +1,6 @@
 package com.web.data.service;
 
+import com.web.common.annotation.LogExecutionTime;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.json.JSONArray;
@@ -22,7 +23,9 @@ public class ApiClient {
 
     @Value("${public.api.key}")
     private String publicApiKey;
+    @LogExecutionTime
     protected JSONArray fetchDataFromApi(String apiUrl) throws IOException {
+        log.info("fetchDataFromApi 동작");
         URL url = new URL(apiUrl);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
@@ -52,7 +55,9 @@ public class ApiClient {
         }
         return itemList;
     }
+    @LogExecutionTime
     protected String createPublicDataApiUrl(String pageNo, String state, String size) throws UnsupportedEncodingException {
+        log.info("createPublicDataApiUrl 동작");
         StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1543061/abandonmentPublicSrvc/abandonmentPublic");
         urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + publicApiKey);
         urlBuilder.append("&" + URLEncoder.encode("bgnde", "UTF-8") + "=" + URLEncoder.encode("", "UTF-8")); /*유기날짜(검색 시작일) (YYYYMMDD)*/

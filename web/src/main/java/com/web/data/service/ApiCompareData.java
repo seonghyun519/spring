@@ -29,6 +29,7 @@ public class ApiCompareData {
     @Transactional
     @LogExecutionTime
     protected void compareData(JSONArray itemList, String state) {
+        log.info("state: " + state + " compareData 동작");
         for (int i = 0; i < itemList.length(); i++) {
             JSONObject itemObject = itemList.getJSONObject(i);
             Optional<PetInfoByAPI> petInfoByAPIOptional = publicPetInfoRepository.findByDesertionNo(itemObject.optLong("desertionNo"));

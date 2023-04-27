@@ -1,5 +1,6 @@
 package com.web.data.service;
 
+import com.web.common.annotation.LogExecutionTime;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
@@ -13,7 +14,10 @@ import java.io.IOException;
 public class ApiDataService {
     private final ApiClient apiClient;
     private final ApiCompareData apiCompareData;
+
+    @LogExecutionTime
     public String apiCompareData(String pageNo, String state, String size) throws IOException {
+        log.info("state: " + state + "pageNo: " + pageNo + " apiCompareData 동작");
         String apiUrl = apiClient.createPublicDataApiUrl(pageNo, state, size);
         JSONArray itemList = apiClient.fetchDataFromApi(apiUrl);
 
